@@ -13,7 +13,7 @@ class InL2Ranker(metapy.index.RankingFunction):
         self.param = some_param
         # You *must* call the base class constructor here!
         super(InL2Ranker, self).__init__()
-
+        #
     def score_one(self, sd):
         """
         You need to override this function to return a score for a single term.
