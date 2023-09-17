@@ -34,7 +34,15 @@ def load_ranker(cfg_file):
     The parameter to this function, cfg_file, is the path to a
     configuration file used to load the index. You can ignore this for MP2.
     """
-    return metapy.index.JelinekMercer()
+    bm25 = read.table('bm25.avg_p.txt')$V1
+    inl2 = read.table('inl2.avg_p.txt')$V1
+    p_value = t.test(bm25, inl2, paired=T)
+    f = open("significance.txt", "w")
+    f.write(p_value)
+    f.close()
+    
+    return 0
+    #return metapy.index.JelinekMercer()
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
