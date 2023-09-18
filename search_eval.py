@@ -34,15 +34,8 @@ def load_ranker(cfg_file):
     The parameter to this function, cfg_file, is the path to a
     configuration file used to load the index. You can ignore this for MP2.
     """
-    bm25 = read.table('bm25.avg_p.txt')$V1
-    inl2 = read.table('inl2.avg_p.txt')$V1
-    p_value = t.test(bm25, inl2, paired=T)
-    f = open("significance.txt", "w")
-    f.write(p_value)
-    f.close()
-    
-    return 0
-    #return metapy.index.JelinekMercer()
+
+    return metapy.index.JelinekMercer()
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
@@ -68,6 +61,9 @@ if __name__ == '__main__':
     query_path = query_cfg.get('query-path', 'queries.txt')
     query_start = query_cfg.get('query-id-start', 0)
 
+    result = scipy.stats.ttest_rel(metapy.index.OkapiBM25(k1=1.0), InL2Ranker)
+    print(result.pvalue)
+    
     query = metapy.index.Document()
     print('Running queries')
     with open(query_path) as query_file:
@@ -78,3 +74,4 @@ if __name__ == '__main__':
             print("Query {} average precision: {}".format(query_num + 1, avg_p))
     print("Mean average precision: {}".format(ev.map()))
     print("Elapsed: {} seconds".format(round(time.time() - start_time, 4)))
+    
